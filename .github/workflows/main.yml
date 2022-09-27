@@ -14,7 +14,7 @@ permissions:
 jobs:
   deployment:
     runs-on: ubuntu-latest
-    env:      
+    env:
       STACKNAME: sveltekit-adapter-aws-webapp
       APPURL: https://serverless-day-2022.mikebild.com
       TABLENAME: sveltekit-adapter-aws-webapp-ddb-datatable8A20CA66-6JPCO3P07USG
@@ -29,7 +29,7 @@ jobs:
           cache: 'npm'
       - name: install dependencies
         run: |
-          npm install         
+          npm install
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -38,7 +38,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
       - name: run test
         run: |
-          npm test           
+          npm test
       - name: build and deploy
         run: |
           npm run build
