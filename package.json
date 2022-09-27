@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "npm run slides && AWS_SDK_LOAD_CONFIG=1 vite dev",
+		"dev": "AWS_SDK_LOAD_CONFIG=1 vite dev",
 		"build": "npm run slides && vite build",
 		"preview": "vite preview",
 		"test": "playwright test",
