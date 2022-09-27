@@ -330,14 +330,14 @@ test('GET /api/likes export status code 200', async ({ request }) => {
 
 # AWS-CDK Anatomy
 
-![Anatomy](image.png)
+![width:1024](static/aws-cdk-cli.jpg)
 
 ---
 
 # Constructs
 
 - Construct represents a "cloud component" (e.g. a single AWS resource)
-  Different levels of constructs
+- Different levels of constructs
   - Layer 1 - CFN Resources - generated from CF Resource Specification
   - Layer 2 - Higher-Level, reduced complexity, intent-based API
   - Layer 3 - Pattern as complete common tasks in AWS
