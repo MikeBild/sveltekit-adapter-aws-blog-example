@@ -26,16 +26,16 @@ jobs:
           cache: 'npm'
       - name: install dependencies
         run: |
-          npm install
-      - name: run test
-        run: |
-          npm test          
+          npm install         
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT }}:role/GitHubActionRole
           role-session-name: serverless-days-2022
           aws-region: ${{ env.AWS_REGION }}
+      - name: run test
+        run: |
+          npm test           
       - name: build and deploy
         run: |
           npm run build
