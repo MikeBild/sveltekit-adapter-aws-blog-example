@@ -13,7 +13,7 @@ _paginate: false
 
 ## Sveltekit & AWS-CDK
 
-https://github.com/MikeBild/sveltkit-adapter-aws-blog
+[Workshop on GitHub](https://github.com/MikeBild/sveltekit-adapter-aws-blog-example)
 
 ---
 
@@ -151,8 +151,8 @@ export const load: PageLoad = async (event) => {};
 
 ```html
 <script lang="ts">
-	import type { PageData } from './$types';
-	export let data: PageData;
+  import type { PageData } from './$types';
+  export let data: PageData;
 </script>
 ```
 
@@ -168,11 +168,11 @@ export const load: PageLoad = async (event) => {};
 import type { Actions } from './$types';
 
 export const actions: Actions = {
-	default: async ({ request }) => {
-		const form = await request.formData();
-		const email = form.get('email');
-		return { success: true };
-	}
+  default: async ({ request }) => {
+    const form = await request.formData();
+    const email = form.get('email');
+    return { success: true };
+  }
 };
 ```
 
@@ -180,13 +180,13 @@ export const actions: Actions = {
 
 ```html
 <script lang="ts">
-	import type { ActionData } from './$types';
-	export let form: ActionData;
+  import type { ActionData } from './$types';
+  export let form: ActionData;
 </script>
 
 <form method="post">
-	<input type="email" name="email" required />
-	<input type="submit" value="submit" />
+  <input type="email" name="email" required />
+  <input type="submit" value="submit" />
 </form>
 ```
 
@@ -202,11 +202,11 @@ export const actions: Actions = {
 import { json, error, type RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async () => {
-	return json({});
+  return json({});
 };
 
 export const PUT: RequestHandler = async () => {
-	return json({});
+  return json({});
 };
 ```
 
@@ -216,10 +216,10 @@ export const PUT: RequestHandler = async () => {
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ fetch }) => {
-	const request = await fetch('/api/likes');
-	const data = await request.json();
+  const request = await fetch('/api/likes');
+  const data = await request.json();
 
-	return { data };
+  return { data };
 };
 ```
 
@@ -253,18 +253,18 @@ export const load: PageLoad = async ({ fetch }) => {
 
 ```html
 <header>
-	<nav class="container-fluid">
-		<ul>
-			<li>
-				<strong><a href="/">Workshop</a></strong>
-			</li>
-		</ul>
-		<ul>
-			<li><a href="/posts">posts</a></li>
-			<li><a href="/contact">contact</a></li>
-			<li><a href="/slides.html" target="_blank">slides</a></li>
-		</ul>
-	</nav>
+  <nav class="container-fluid">
+    <ul>
+      <li>
+        <strong><a href="/">Workshop</a></strong>
+      </li>
+    </ul>
+    <ul>
+      <li><a href="/posts">posts</a></li>
+      <li><a href="/contact">contact</a></li>
+      <li><a href="/slides.html" target="_blank">slides</a></li>
+    </ul>
+  </nav>
 </header>
 ```
 
@@ -274,7 +274,7 @@ export const load: PageLoad = async ({ fetch }) => {
 
 ```html
 <svelte:head>
-	<title>Welcome</title>
+  <title>Welcome</title>
 </svelte:head>
 ```
 
@@ -298,8 +298,8 @@ import { TABLENAME } from '$env/static/private';
 import { expect, test } from '@playwright/test';
 
 test('start page has expected h2', async ({ page }) => {
-	await page.goto('/');
-	expect(await page.textContent('h2')).toBe('Welcome');
+  await page.goto('/');
+  expect(await page.textContent('h2')).toBe('Welcome');
 });
 ```
 
@@ -309,9 +309,9 @@ test('start page has expected h2', async ({ page }) => {
 import { expect, test } from '@playwright/test';
 
 test('GET /api/likes export status code 200', async ({ request }) => {
-	const expected = await request.get('/api/likes');
+  const expected = await request.get('/api/likes');
 
-	expect(expected.status()).toBe(200);
+  expect(expected.status()).toBe(200);
 });
 ```
 
@@ -390,8 +390,43 @@ new AWSAdapterStack(app, 'sveltekit-adapter-aws-webapp');
 
 ```js
 {
-	adapter: adapter({
-		cdkProjectPath: join(process.cwd(), 'infrastructure/deploy.js')
-	});
+  adapter: adapter({
+    cdkProjectPath: join(process.cwd(), 'infrastructure/deploy.js')
+  });
 }
 ```
+
+---
+
+# Domain & SSL
+
+**svelte.config.js**
+
+```js
+{
+  adapter: adapter({
+    autoDeploy: true,
+    FQDN: 'serverless-days-2022.mikebild.com'
+  });
+}
+```
+
+---
+
+# Destroy
+
+**packages.json**
+
+```json
+{
+  "scripts": {
+    "destroy": "destroy"
+  }
+}
+```
+
+`npm run destroy`
+
+---
+
+# Thank you!
