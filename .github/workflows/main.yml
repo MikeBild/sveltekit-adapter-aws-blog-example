@@ -1,0 +1,41 @@
+name: AWS-Serverless-Deployment
+
+on:
+  push:
+    branches: [master]
+
+env:
+  AWS_REGION: 'eu-central-1'
+  AWS_ACCOUNT: '044086961882'
+
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    env:
+      TABLENAME: sveltekit-adapter-aws-webapp-ddb-datatable8A20CA66-6JPCO3P07USG
+
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - name: install dependencies
+        run: |
+          npm install
+      - name: run test
+        run: |
+          npm test          
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT }}:role/GitHubActionRole
+          role-session-name: serverless-days-2022
+          aws-region: ${{ env.AWS_REGION }}
+      - name: build and deploy
+        run: |
+          npm run build
