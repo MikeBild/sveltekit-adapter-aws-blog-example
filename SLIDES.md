@@ -128,3 +128,8 @@ src/routes
   - **+page.ts/js** load data CSR + SSR
   - **+page.server.ts/js** handle data SSR only
   - **+server.ts/js** defines API like routes
+
+---
+
+## Handle Page Data
+
