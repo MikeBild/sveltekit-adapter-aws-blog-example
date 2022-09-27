@@ -3,17 +3,19 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "AWS_SDK_LOAD_CONFIG=1 && vite dev",
-		"build": "vite build",
+		"dev": "AWS_SDK_LOAD_CONFIG=1 && npm run slides && vite dev",
+		"build": "npm run slides && vite build",
 		"preview": "vite preview",
 		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"destroy": "destroy"
+		"destroy": "destroy",
+		"slides": "marp SLIDES.md -o static/slides.html"
 	},
 	"devDependencies": {
+		"@marp-team/marp-cli": "^2.2.0",
 		"@picocss/pico": "^1.5.5",
 		"@playwright/test": "^1.25.0",
 		"@sveltejs/adapter-auto": "next",
