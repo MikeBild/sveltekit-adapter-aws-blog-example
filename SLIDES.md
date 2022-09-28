@@ -29,11 +29,11 @@ _paginate: false
 
 # HOW!
 
-- SvelteKit + AWS-CDK = Svelte Adapter AWS
+- SvelteKit adapters are small plugins to transform build inputs to deployable outputs
+- SvelteKit + AWS-CDK = SvelteKit Adapter AWS
   - [NPM](https://www.npmjs.com/package/sveltekit-adapter-aws)
   - [GitHub](https://github.com/MikeBild/sveltekit-adapter-aws)
-- SvelteKit adapters are small plugins to transform build inputs to deployable outputs
-- Note the AWS resource quotas!
+- **Note that AWS has resource quotas**
 
 ---
 
@@ -42,7 +42,7 @@ _paginate: false
 - Building a simple project structure
 - Setup and configuration of infrastructure and deployment environment(s)
 - Setup the testing environment
-- Integration of CI and CD (GitHub Actions)
+- Integration of CI and CD using GitHub Actions
 - Additional development tools
   - [VS Code extensions](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode)
   - Custom-Stacks, Storybook, Component-Library, Markdown Svelte Extension, etc.
@@ -63,21 +63,25 @@ _paginate: false
 
 # SvelteKit
 
-- `npm create svelte@latest blog`
-- `npm run dev`
+`npm create svelte@latest blog`
+
+`npm run dev`
 
 ---
 
 # SvelteKit Adapter AWS
 
 - `npm install -D sveltekit-adapter-aws`
-- edit the **svelte.config.js**
+
+**svelte.config.js**
 
 ```js
 import { adapter } from 'sveltekit-adapter-aws';
 ```
 
-- `npm run build`
+`npm run build`
+
+<style scoped> { font-size: 2rem; }</style>
 
 ---
 
@@ -238,7 +242,7 @@ export const load: PageLoad = async ({ fetch }) => {
   import Header from '$lib/components/Header.svelte';
 </script>
 
-<Header />
+<Header title="Serverless Days 2022" />
 
 <main class="container">
   <slot />
@@ -252,12 +256,14 @@ export const load: PageLoad = async ({ fetch }) => {
 **src/lib/components/Header.svelte**
 
 ```html
+<script lang="ts">
+  export let title: string = 'Title';
+</script>
+
 <header>
   <nav class="container-fluid">
     <ul>
-      <li>
-        <strong><a href="/">Workshop</a></strong>
-      </li>
+      <li><strong><a href="/">{title}</a></strong></li>
     </ul>
     <ul>
       <li><a href="/posts">posts</a></li>
@@ -267,6 +273,8 @@ export const load: PageLoad = async ({ fetch }) => {
   </nav>
 </header>
 ```
+
+<style scoped> { font-size: 2rem; }</style>
 
 ---
 

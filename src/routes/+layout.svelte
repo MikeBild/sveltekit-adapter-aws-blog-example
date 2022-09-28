@@ -4,7 +4,7 @@
   import Header from '$lib/components/Header.svelte';
 </script>
 
-<Header />
+<Header title="Serverless Days 2022" />
 
 <main class="container">
   <slot />

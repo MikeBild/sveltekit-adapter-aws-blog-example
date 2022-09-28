@@ -1,7 +1,11 @@
+<script lang="ts">
+  export let title: string = 'Title';
+</script>
+
 <header>
   <nav class="container-fluid">
     <ul>
-      <li><strong><a href="/">Serverless Days 2022</a></strong></li>
+      <li><strong><a href="/">{title}</a></strong></li>
     </ul>
     <ul>
       <li><a href="/posts">posts</a></li>
