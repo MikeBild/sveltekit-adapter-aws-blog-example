@@ -18,7 +18,7 @@ jobs:
       STACKNAME: sveltekit-adapter-aws-webapp
       APPURL: https://serverless-day-2022.mikebild.com
       TABLENAME: sveltekit-adapter-aws-webapp-ddb-datatable8A20CA66-6JPCO3P07USG
-      FQDN: serverless-day-2022.mikebild.com
+      FQDN: serverless-days-2022.mikebild.com
 
     steps:
       - name: Git clone the repository
