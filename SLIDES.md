@@ -338,7 +338,7 @@ test('GET /api/likes export status code 200', async ({ request }) => {
 
 # AWS-CDK Anatomy
 
-![width:1024](static/aws-cdk-cli.jpg)
+![width:1024](aws-cdk-cli.jpg)
 
 ---
 
