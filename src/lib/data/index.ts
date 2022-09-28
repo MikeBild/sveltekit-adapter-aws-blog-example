@@ -1,9 +1,7 @@
-import type { Likes } from '$lib/models/Likes';
+import type { Likes, Like } from '$lib/models/Likes';
 import type { Posts } from '$lib/models/Posts';
-import { DynamoDB } from 'aws-sdk';
+import singleTable from '../helpers/dynamodb-single-table';
 import { TABLENAME } from '$env/static/private';
-
-const ddb = new DynamoDB();
 
 export async function getPosts() {
   const data = Object.entries(import.meta.glob('../../routes/posts/**/*.svx', { eager: true }));
@@ -18,22 +16,11 @@ export async function getPosts() {
 }
 
 export async function getLikes(): Promise<Likes> {
-  const result = await ddb
-    .scan({
-      TableName: TABLENAME,
-      ConsistentRead: true,
-      FilterExpression: `#datatype = :like`,
-      ExpressionAttributeValues: {
-        ':like': { S: 'like' }
-      },
-      ExpressionAttributeNames: {
-        '#datatype': 'datatype'
-      }
-    })
-    .promise();
+  const data = singleTable(TABLENAME)('like');
+  const result = await data.listAll<Like>();
 
   return (
-    result.Items?.map((x) => DynamoDB.Converter.unmarshall(x)).reduce(
+    result.reduce(
       (p, n) => ({
         ...p,
         [n.id]: n.value
@@ -42,6 +29,7 @@ export async function getLikes(): Promise<Likes> {
     ) || {}
   );
 }
+
 
 export async function addLike(id: string): Promise<void> {
   const result = await ddb
