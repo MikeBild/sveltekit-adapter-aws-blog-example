@@ -9,19 +9,22 @@ export default (tableName: string) => {
   const ddb = new DynamoDB();
 
   return (dataType: string) => ({
-    listAll: () => listAll(tableName, dataType),
-    getById: (id: string) => getById(id, tableName, dataType),
-    upsert: <T extends Entity>(item: T) => upsert(item, tableName, dataType),
+    list: <T>() => list<T>(tableName, dataType),
+    get: <T>(id: string) => get<T>(id, tableName, dataType),
+    put: <T extends Entity>(item: T) => put(item, tableName, dataType),
     remove: (id: string) => remove(id, tableName, dataType)
   });
 
-  async function listAll<T extends Entity>(
+  async function list<T>(
     tableName: string,
-    dataType: string
-  ): Promise<T[] | undefined> {
+    dataType: string,
+    items: T[] = [],
+    startKey?: any
+  ): Promise<T[]> {
     const result = await ddb
       .scan({
         TableName: tableName,
+        ExclusiveStartKey: startKey,
         ConsistentRead: true,
         FilterExpression: `#datatype = :datatype`,
         ExpressionAttributeValues: {
@@ -33,10 +36,18 @@ export default (tableName: string) => {
       })
       .promise();
 
-    return result.Items?.map((x: any) => DynamoDB.Converter.unmarshall(x) as T) || undefined;
+    if (result.Items) {
+      items = [...items, ...result.Items.map((x: any) => DynamoDB.Converter.unmarshall(x) as T)];
+    }
+
+    if (result.LastEvaluatedKey) {
+      return await list(tableName, dataType, items, result.LastEvaluatedKey);
+    }
+
+    return items;
   }
 
-  async function getById<T extends Entity>(
+  async function get<T>(
     id: string,
     tableName: string,
     dataType: string
@@ -54,13 +65,13 @@ export default (tableName: string) => {
     return result.Item ? (DynamoDB.Converter.unmarshall(result.Item) as T) : undefined;
   }
 
-  async function upsert<T extends Entity>(
+  async function put<T extends Entity>(
     item: T,
     tableName: string,
     dataType: string
   ): Promise<void> {
-    const existing = await getById(item.id, tableName, dataType);
-    
+    const existing = await get<T>(item.id, tableName, dataType);
+
     await ddb
       .putItem({
         TableName: tableName,

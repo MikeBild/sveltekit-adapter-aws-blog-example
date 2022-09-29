@@ -263,7 +263,9 @@ export const load: PageLoad = async ({ fetch }) => {
 <header>
   <nav class="container-fluid">
     <ul>
-      <li><strong><a href="/">{title}</a></strong></li>
+      <li>
+        <strong><a href="/">{title}</a></strong>
+      </li>
     </ul>
     <ul>
       <li><a href="/posts">posts</a></li>
@@ -317,9 +319,9 @@ test('start page has expected h2', async ({ page }) => {
 import { expect, test } from '@playwright/test';
 
 test('GET /api/likes export status code 200', async ({ request }) => {
-  const expected = await request.get('/api/likes');
+  const actual = await request.get('/api/likes');
 
-  expect(expected.status()).toBe(200);
+  expect(actual.status()).toBe(200);
 });
 ```
 
@@ -437,4 +439,12 @@ new AWSAdapterStack(app, 'sveltekit-adapter-aws-webapp');
 
 ---
 
+# recap
+
+---
+
 # Thank you!
+
+- https://github.com/MikeBild
+- https://twitter.com/mikebild
+- https://www.linkedin.com/in/mikebild/

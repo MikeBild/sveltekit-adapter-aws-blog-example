@@ -17,7 +17,7 @@ export async function getPosts() {
 
 export async function getLikes(): Promise<Likes> {
   const data = singleTable(TABLENAME)('like');
-  const result = await data.listAll<Like>();
+  const result = await data.list<Like>();
 
   return (
     result.reduce(
@@ -30,29 +30,10 @@ export async function getLikes(): Promise<Likes> {
   );
 }
 
-
 export async function addLike(id: string): Promise<void> {
-  const result = await ddb
-    .getItem({
-      TableName: TABLENAME,
-      ConsistentRead: true,
-      Key: DynamoDB.Converter.marshall({
-        id,
-        datatype: 'like'
-      })
-    })
-    .promise();
+  const data = singleTable(TABLENAME)('like');
 
-  const likeToUpdate = result.Item && DynamoDB.Converter.unmarshall(result.Item);
-
-  await ddb
-    .putItem({
-      TableName: TABLENAME,
-      Item: DynamoDB.Converter.marshall({
-        id,
-        datatype: 'like',
-        value: likeToUpdate?.value ? likeToUpdate.value + 1 : 1
-      })
-    })
-    .promise();
+  const existing = await data.get<Like>(id);  
+  const updated = { id, value: (existing?.value || 0) + 1 };  
+  await data.put<Like>(updated);
 }
